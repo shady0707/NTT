@@ -1,15 +1,33 @@
 \documentclass[a4paper, 12pt]{NUSThesis}
+\usepackage{tikz}
+\usepackage{lipsum}
 \title{NUS Thesis Template}
-\author{Shen Zhou}
+\author{SHEN Zhou}
+\prevdegrees{B.S. Lanzhou University}
+\degree{Doctor of Philosophy}
+\field{Physics}
+\degreeyear{2020}
+
 \begin{document}
 \maketitle
+\makedeclaration
+\frontmatter
+\begin{acknowledgments}
+\lipsum[1-5]
+\end{acknowledgments}
 \tableofcontents
+\begin{abstract}
+\lipsum[1-3]
+\end{abstract}
+\listoftables
+\listoffigures
+\mainmatter
 \chapter{Introduction}
 \section{Introduction}
-Physics is one of the oldest academic disciplines and, through its inclusion of astronomy, perhaps the oldest.[9] Over much of the past two millennia, physics, chemistry, biology, and certain branches of mathematics, were a part of natural philosophy, but during the Scientific Revolution in the 17th century these natural sciences emerged as unique research endeavors in their own right.[b] Physics intersects with many interdisciplinary areas of research, such as biophysics and quantum chemistry, and the boundaries of physics are not rigidly defined. New ideas in physics often explain the fundamental mechanisms studied by other sciences[6] and suggest new avenues of research in academic disciplines such as mathematics and philosophy. 
+\lipsum[1-4]
 \begin{table}[htpb]
     \centering
-    \caption{This is long table caption test for single-space constriant. But
+    \caption[short table caption]{This is long table caption test for single-space constriant. But
     it seems that I need to put more words here.}
     \begin{tabular}{ccc}
         \hline
@@ -17,4 +35,13 @@ Physics is one of the oldest academic disciplines and, through its inclusion of 
         \hline
     \end{tabular}
 \end{table}
+\lipsum[1-4]
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \draw[help lines,step=5mm,gray!20] (0,0) grid (10,5);
+    \end{tikzpicture}
+    \caption[short figure caption]{This is long figure caption test for single-space constriant. But
+    it seems that I need to put more words here.}
+\end{figure}
 \end{document}
