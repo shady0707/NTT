@@ -52,37 +52,84 @@
 % The declaration signature
 \def\declaresign#1{\gdef\@declaresign{#1}}
 
-\renewcommand\maketitle{%
-    \thispagestyle{empty}
-    \singlespacing
-    \begin{center}
-        \bfseries \Large \@title
-    \end{center}
-    \begin{center}
-        \@author\\
-        (\@prevdegrees)
-    \end{center}
-    \clearpage
-}
+\def\blocklt#1{\textbf{\MakeUppercase{#1}}}
+\renewcommand\maketitle{{
+  \makeatletter
+    \setlength{\@tempdima}{28pt}\advance\@tempdima-\baselineskip
+    \parskip=\@tempdima minus 4pt
+  \makeatother
+\begin{alwayssingle}
+  \hrule height 0pt
+  \vfill
+  %\let\footnotesize\small
+  \let\footnoterule\relax
+  \thispagestyle{empty}
+  \setcounter{page}{1}
+
+  \begin{center}
+    \blocklt{\@title}\par
+    \vspace{14pt minus 4pt}
+    by \par
+    \blocklt{\@author}
+    \ifdefined \@prevdegrees
+      \par\vspace{-10pt}\textit{(\@prevdegrees)}
+    \fi\par
+    \vspace{28pt minus 8pt}
+    \blocklt{A thesis submitted for the degree of} \par
+    \blocklt{\@degree}\par
+    in \par
+    \blocklt{\@field}\par
+    in the \par
+    \blocklt{Graduate Division} \par
+    of the \par
+    \blocklt{National University of Singapore} \par
+    \vspace{28pt minus 8pt}
+    \blocklt{\@degreeyear} \par
+    \vspace{14pt minus 4pt}
+    \ifdefined \@cosupervisor
+      Supervisors: \par\vspace{-10pt}
+      {\@supervisor}, Main Supervisor \\
+      {\@cosupervisor}, Co-Supervisor
+      \ifdefined \@anothercosupervisor
+        \\{\@anothercosupervisor}, Co-Supervisor
+      \fi
+    \else
+      Supervisor: \par\vspace{-10pt}
+      {\@supervisor}
+    \fi\par
+    \ifdefined \@examiners
+      \vspace{5pt}
+      Examiners: \par\vspace{-10pt}
+      {\@examiners}\par
+    \fi
+  \end{center}
+  \vfill
+  \hrule height 0pt
+\end{alwayssingle}
+\setcounter{footnote}{0}
+}}
 
 \newcommand\makedeclaration{
+\intendclearpage
     \thispagestyle{empty}
-    \begin{center}
-        {\bfseries \Large Declaration}
-    \end{center}
-    {
-        \large
-I hereby declare that this thesis is my original work and it has been written by me in its entirety.I have duly acknowledged all the sources of information which have been used in the thesis.
+    \begin{alwayssingle}
+        \begin{center}
+            {\bfseries \Large Declaration}
+        \end{center}
+        {
+            \large
+            I hereby declare that this thesis is my original work and it has been written by me in its entirety.I have duly acknowledged all the sources of information which have been used in the thesis.
 
-This thesis has also not been submitted for any degree in any university previously.
-}
+            This thesis has also not been submitted for any degree in any university previously.
+        }
 
-\begin{center}
-    \rule{3cm}{0.15mm}\\
-    \@author\\
-    \@date
-\end{center}
-\clearpage
+        \begin{center}
+            \rule{3cm}{0.15mm}\\
+            \@author\\
+            \@date
+        \end{center}
+    \end{alwayssingle}
+\intendclearpage
 }
 
 \newcommand{\abstractname}{Abstract}
@@ -90,9 +137,8 @@ This thesis has also not been submitted for any degree in any university previou
   \intendclearpage
   \phantomsection
   \addcontentsline{toc}{chapter}{\abstractname}
-  \begin{alwayssingle}
+  %%\begin{alwayssingle}
       \begin{center}{
-              %\ssp\fmfont
               {\large \bfseries \abstractname}\par
               \vspace{.5in}
               \@title\par
@@ -109,29 +155,73 @@ This thesis has also not been submitted for any degree in any university previou
       \end{center}
 }
 {
-\par\vfil\null\end{alwayssingle}
+  %\end{alwayssingle}
 }
 
 \newcommand\acknowledgename{Acknowledgements}
 \newenvironment{acknowledgments}
-  {\intendclearpage
+  {
+      \intendclearpage
    \phantomsection\addcontentsline{toc}{chapter}{\acknowledgename}
-   \begin{alwayssingle}
    \begin{center}
    {\large \bfseries \acknowledgename}
    \end{center}
   }
-  {\end{alwayssingle}}
+  {}
 
 \appto\frontmatter{\doublespacing}
+
+
+% The Grad. Division requires that "Placement of page numbers must be
+% at the center of bottom."
+
+\RequirePackage{fancyhdr}  % Needed to define custom headers/footers
+\fancypagestyle{mainmatterstyle}{
+    \fancyhf{}
+    \fancyhead{}
+    \fancyfoot{} % clear all footer fields
+    \fancyfoot[CE,CO]{\thepage}
+    \renewcommand{\headrulewidth}{0.pt}
+}
+
+\appto\mainmatter{\pagestyle{mainmatterstyle}}
+
+\fancypagestyle{frontmatterstyle}{
+    \fancyhf{}
+    \fancyhead{}
+    \fancyfoot{} % clear all footer fields
+    \fancyfoot[CE,CO]{\thepage}
+    \renewcommand{\headrulewidth}{0.pt}
+}
+
+\appto\frontmatter{\pagestyle{frontmatterstyle}}
+
+%\pagestyle{simple}
+%\makeevenhead{simple}{\leftmark}{}{}
+%\makeoddhead{simple}{}{}{\rightmark}
+%\makeevenfoot{simple}{}{\thepage}{}
+%\makeoddfoot{simple}{}{\thepage}{}
+%\aliaspagestyle{book}{simple}
+%\aliaspagestyle{part}{simple}
+%\aliaspagestyle{chapter}{simple}
+%\aliaspagestyle{title}{simple}
 
 % Re-defining \tableofcontents, \listoffigures and \listoftables to 
 % avoid self-referencing. 
 
+%\renewcommand{\tableofcontents}{
+  %\intendclearpage
+  %\phantomsection\pdfbookmark[chapter]{\contentsname}{toc}
+  %\chapter*{\contentsname}\vspace{2em}\makeatletter\@starttoc{toc}\makeatother}
+
+\let\oldtableofcontents\tableofcontents
 \renewcommand{\tableofcontents}{
-  \intendclearpage
-  \phantomsection\pdfbookmark[chapter]{\contentsname}{toc}
-  \chapter*{\contentsname}\vspace{2em}\makeatletter\@starttoc{toc}\makeatother}
+\phantomsection
+\addcontentsline{toc}{chapter}{Contents}
+\oldtableofcontents
+\clearpage
+}
+
 
 \renewcommand{\listoffigures}{
   \intendclearpage
