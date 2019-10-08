@@ -14,4 +14,4 @@
 *.fdb_latexmk
 *.thmn
 *.lot
-
+*.lof
